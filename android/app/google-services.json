@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "963177550887",
+    "project_id": "itungduit-9cd4d",
+    "storage_bucket": "itungduit-9cd4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963177550887:android:dcb9fbf5de3d273167ea02",
+        "android_client_info": {
+          "package_name": "net.rcdevgames.itungduit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963177550887-smvco3m0mdo0d8d31o3b6bdfqsj44oc6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.rcdevgames.itungduit",
+            "certificate_hash": "92a3822c1b230eab3e0c4d2db28043f711df43b0"
+          }
+        },
+        {
+          "client_id": "963177550887-mt2t7o63rdiebnnr8979ive57vt71dvj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaZZfQKeaJk0vcULzRGJcyNqZX8YaZx1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963177550887-mt2t7o63rdiebnnr8979ive57vt71dvj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "963177550887-b6c3qps9014v4vlr90pr5f6bqkkencit.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.rcdevgames.itungduit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
