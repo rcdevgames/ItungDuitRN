@@ -7,6 +7,7 @@ import {Colors} from './Assets'
 // Routes
 import LoginPage from './View/Login';
 import HomePage from './View/Home';
+import DetailExpensePage from './View/Expense/Detail';
 
 const Stack = createStackNavigator();
 const Route = () => {
@@ -30,6 +31,18 @@ const Route = () => {
                     }}
                     name="/home"
                     component={HomePage}
+                />
+                <Stack.Screen
+                    options={{
+                        title: "Detail Expense",
+                        headerStyle: {
+                            backgroundColor: Colors.primary,
+                        },
+                        headerBackTitleVisible: false,
+                        headerTintColor: '#fff',
+                    }}
+                    name="/expense-detail"
+                    component={DetailExpensePage}
                 />
             </Stack.Navigator>
         </NavigationContainer>
