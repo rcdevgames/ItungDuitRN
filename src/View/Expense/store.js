@@ -1,26 +1,54 @@
-import { store } from '@risingstack/react-easy-state';
+import { autoEffect, store } from '@risingstack/react-easy-state';
+import { ACTION_DATE_SET, ACTION_NEUTRAL } from 'react-native-month-year-picker';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
+import { Alert } from 'react-native';
 
 const expenseStore = store({
-    refreshList: false,
-    items: [
-        {id: 1, month: "January", year: "2020", total: 0},
-        {id: 2, month: "January", year: "2020", total: 0},
-        {id: 3, month: "January", year: "2020", total: 0},
-        {id: 4, month: "January", year: "2020", total: 0},
-        {id: 5, month: "January", year: "2020", total: 0},
-    ],
-    setIndex(val) {
-        homeStore.index = val;
-    },
+    showDatePicker: false,
+    date: new Date(),
     setRefreshList(val) {
-        homeStore.refreshList = val;
+        expenseStore.refreshList = val;
     },
     async refreshData() {
-        homeStore.setRefreshList(true);
-        setTimeout(() => {
-            homeStore.setRefreshList(false);
-        }, 1500)
-    }
+        expenseStore.setRefreshList(true);
+        await expenseStore.initialize()
+        expenseStore.setRefreshList(false);
+    },
+    setDatePicker() {
+        expenseStore.showDatePicker = true;
+    },
+    async setDate(event, date, query) {
+        if (event == ACTION_DATE_SET) {
+            const month = parseInt(moment(date).format('M'));
+            const year = parseInt(moment(date).format('YYYY'));
+            const user = auth().currentUser;
+            const data = {
+                month: month,
+                year: year,
+                total: 0,
+                total_pay: 0,
+                userId: user.uid,
+                details: [],
+                created_at: new Date()
+            };
+            firestore().collection('expenses').where("userId", "==", user.uid).where('month','==',month).where('year','==',year).get()
+            .then(async (result) => {
+                if (result.empty) {
+                    const res = await query.add(data);
+                }else {
+                    
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+            // console.log(data);
+
+        }
+        expenseStore.showDatePicker = false;
+    },
 });
 
 export default expenseStore;

@@ -6,7 +6,6 @@ export default StyleSheet.create({
         flex: 1,
         padding: 15,
         backgroundColor: Colors.primary
-        // justifyContent: 'center',
     },
     loginForm: {
         marginBottom: 10
@@ -23,5 +22,10 @@ export default StyleSheet.create({
         height: undefined,
         aspectRatio: 1.5,
         marginTop: 100
+    },
+    leading: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: "#FFF"
     }
 });

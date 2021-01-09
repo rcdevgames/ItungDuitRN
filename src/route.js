@@ -8,6 +8,8 @@ import {Colors} from './Assets'
 import LoginPage from './View/Login';
 import HomePage from './View/Home';
 import DetailExpensePage from './View/Expense/Detail';
+import OTPPage from './View/OTP';
+import SplashScreenPage from './View/SplashScreen';
 
 const Stack = createStackNavigator();
 const Route = () => {
@@ -19,7 +21,25 @@ const Route = () => {
                         headerShown: false
                     }}
                     name="/"
+                    component={SplashScreenPage}
+                />
+                <Stack.Screen
+                    options={{
+                        headerShown: false
+                    }}
+                    name="/login"
                     component={LoginPage}
+                />
+                <Stack.Screen
+                    options={{
+                        title: "",
+                        headerBackTitleVisible: false,
+                        headerTintColor: '#fff',
+                        headerTransparent: true
+                        
+                    }}
+                    name="/otp"
+                    component={OTPPage}
                 />
                 <Stack.Screen
                     options={{

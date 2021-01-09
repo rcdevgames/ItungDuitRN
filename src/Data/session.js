@@ -2,7 +2,7 @@ import { store } from '@risingstack/react-easy-state';
 import RNSecureStorage from 'react-native-secure-storage';
 
 const sessionStorage = store({
-    storeParams = {
+    storeParams : {
         keychainService: 'IOS_ItungDuit_Session',
         sharedPreferencesName: 'Android_ItungDuit_Session',
     },
