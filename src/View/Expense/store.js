@@ -19,8 +19,21 @@ const expenseStore = store({
     setDatePicker() {
         expenseStore.showDatePicker = true;
     },
-    async setDate(event, date, query) {
+    openDetail(query, docId) {
+        Alert.alert(
+            "Delete",
+            "Are you sure?",
+            [
+                { text: "Cancel", style: "cancel", onPress: () => {} },
+                { text: "Delete", style: 'destructive', onPress: () => {
+                    query.doc(docId).delete();
+                } }
+            ]
+        )
+    },
+    async setDate(event, date, nav) {
         if (event == ACTION_DATE_SET) {
+            const query = firestore().collection('expenses');
             const month = parseInt(moment(date).format('M'));
             const year = parseInt(moment(date).format('YYYY'));
             const user = auth().currentUser;
@@ -33,12 +46,19 @@ const expenseStore = store({
                 details: [],
                 created_at: new Date()
             };
-            firestore().collection('expenses').where("userId", "==", user.uid).where('month','==',month).where('year','==',year).get()
+            query.where("userId", "==", user.uid).where('month','==',month).where('year','==',year).get()
             .then(async (result) => {
                 if (result.empty) {
-                    const res = await query.add(data);
+                    query.add(data)
+                    .then((res) => {
+                        nav.navigate('/expense-detail', {itemId: res.id})    
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
                 }else {
-                    
+                    const itemId = result.docs[0].id;
+                    nav.navigate('/expense-detail', {itemId: itemId})
                 }
             })
             .catch((error) => {

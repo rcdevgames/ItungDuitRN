@@ -13,10 +13,12 @@ import firestore from '@react-native-firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import numToStringMonth from '../../Data/month';
+import style from './style';
 
 const ExpensePage = ({navigation}) => {
     const [user] = useAuthState(auth());
-    const [value, loading, error] = useCollection(firestore().collection('expenses').where("userId", "==", user.uid));
+    const query = firestore().collection('expenses');
+    const [value, loading, error] = useCollection(query.where("userId", "==", user.uid).orderBy('month', 'desc').orderBy('year','desc'));
 
     const renderItem = ({item}) => {
         const val = item.data();
@@ -31,7 +33,6 @@ const ExpensePage = ({navigation}) => {
                 containerStyle={{}}
                 disabledStyle={{ opacity: 0.5 }}
                 onPress={() => navigation.navigate('/expense-detail', {itemId: item.id})}
-                onLongPress={() => console.log("asdasdasd")}
                 pad={20}
                 >
                 <Icon name="calendar" size={30} color={Colors.primary} />
@@ -43,19 +44,24 @@ const ExpensePage = ({navigation}) => {
                     <Text>{currencyFormat(val.total)}</Text>
                     </ListItem.Subtitle>
                 </ListItem.Content>
+                <TouchableHighlight onPress={() => expenseStore.openDetail(query, item.id)} style={{
+                    padding: 10,
+                    borderRadius: 50,
+                    underlayColor: Colors.primaryLight
+                }}>
+                    <Icon name="trash" color="red"  size={20}/>
+                </TouchableHighlight>
             </ListItem>
         );
     }
 
     return(
-        <View style={{
-            flex: 1
-        }}>
-            {loading && <View style={{
-                flexDirection: 'column',
-                alignContent: 'center'
-            }}>
+        <View style={style.container}>
+            {loading && <View style={style.loadingContainer}>
                 <ActivityIndicator size="large" color={Colors.primary}/>
+            </View>}
+            {error && <View style={style.errorContainer}>
+                <Text>{error.message}</Text>
             </View>}
             {value && <FlatList 
                 data={value.docs}
@@ -64,7 +70,7 @@ const ExpensePage = ({navigation}) => {
             />}
             {expenseStore.showDatePicker && (
                 <RNMonthPicker
-                    onChange={(event, date) => expenseStore.setDate(event, date, value)}
+                    onChange={(event, date) => expenseStore.setDate(event, date, navigation)}
                     value={expenseStore.date}
                     minimumDate={new Date()}
                     maximumDate={new Date(2025, 5)}
