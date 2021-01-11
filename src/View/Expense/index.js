@@ -8,17 +8,13 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Colors } from '../../Assets';
 import {currencyFormat} from '../../Helpers/currency';
 import RNMonthPicker from 'react-native-month-year-picker';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import numToStringMonth from '../../Data/month';
 import style from './style';
+import firestores from '../../Data/firestore';
 
 const ExpensePage = ({navigation}) => {
-    const [user] = useAuthState(auth());
-    const query = firestore().collection('expenses');
-    const [value, loading, error] = useCollection(query.where("userId", "==", user.uid).orderBy('month', 'desc').orderBy('year','desc'));
+    const [value, loading, error] = useCollection(firestores.query());
 
     const renderItem = ({item}) => {
         const val = item.data();

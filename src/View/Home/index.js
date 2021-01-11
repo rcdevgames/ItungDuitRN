@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { View, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import { view } from '@risingstack/react-easy-state';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -7,6 +7,7 @@ import expenseStore from '../Expense/store';
 import ExpensePage from '../Expense';
 import ProfilePage from '../Profile';
 import { Colors } from '../../Assets';
+import ConnectionInfo from '../../Components/netinfo';
 
 const Tab = createBottomTabNavigator();
 const HomePage = ({navigation}) => {

@@ -48,7 +48,7 @@ const ProfilePage = ({navigation}) => {
                         fontWeight: 'bold',
                         fontSize: 16,
                         textAlign: 'center'
-                    }}>{user.phoneNumber}</Text>
+                    }}>{user?.phoneNumber??""}</Text>
                 </View>
             </View>
             <ScrollView>
@@ -60,7 +60,7 @@ const ProfilePage = ({navigation}) => {
                     <Icons name="info-circle" size={20} color={Colors.primary} />
                     <ListItem.Content>
                         <ListItem.Title>
-                            <Text style={{color: Colors.primary}}>About</Text>
+                            <Text style={{color: Colors.primary}}>Tentang Aplikasi</Text>
                         </ListItem.Title>
                     </ListItem.Content>
                     <Icons name="chevron-right" size={20} color="grey" />

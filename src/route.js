@@ -10,6 +10,7 @@ import HomePage from './View/Home';
 import DetailExpensePage from './View/Expense/Detail';
 import OTPPage from './View/OTP';
 import SplashScreenPage from './View/SplashScreen';
+import FormPage from './View/Expense/Form';
 
 const Stack = createStackNavigator();
 const Route = () => {
@@ -54,7 +55,7 @@ const Route = () => {
                 />
                 <Stack.Screen
                     options={{
-                        title: "Detail Expense",
+                        title: "Detail Pengeluaran",
                         headerStyle: {
                             backgroundColor: Colors.primary,
                         },
@@ -63,6 +64,18 @@ const Route = () => {
                     }}
                     name="/expense-detail"
                     component={DetailExpensePage}
+                />
+                <Stack.Screen
+                    options={{
+                        title: "",
+                        headerStyle: {
+                            backgroundColor: Colors.primary,
+                        },
+                        headerBackTitleVisible: false,
+                        headerTintColor: '#fff',
+                    }}
+                    name="/expense-form"
+                    component={FormPage}
                 />
             </Stack.Navigator>
         </NavigationContainer>

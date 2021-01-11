@@ -1,35 +1,34 @@
 import React, { useLayoutEffect } from 'react';
 import { view } from '@risingstack/react-easy-state';
 import { View, TouchableOpacity, Text, FlatList, ActivityIndicator, TouchableHighlight } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
-import { useDocumentOnce } from 'react-firebase-hooks/firestore';
+import { useDocument } from 'react-firebase-hooks/firestore';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Card, CheckBox, ListItem } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import { Colors } from '../../../Assets';
-import UUIDGenerator from 'react-native-uuid-generator';
 import style from './style';
 import numToStringMonth from '../../../Data/month';
 import { currencyFormat } from '../../../Helpers/currency';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import firestores from '../../../Data/firestore';
 
 const DetailExpensePage = ({navigation, route}) => {
+    const insets = useSafeAreaInsets();
     let {itemId} = route.params;
-    const [value, loading, error] = useDocumentOnce(firestore().collection('expenses').doc(itemId));
+    const [value, loading, error] = useDocument(firestores.doc(itemId),{
+        snapshotListenOptions: { includeMetadataChanges: true },
+    });
 
     useLayoutEffect(() => {
         navigation.setOptions({
           headerRight: () => (
             <TouchableOpacity style={{ marginRight: 15 }}
                 onPress={() => {
-                    // expenseStore.setDatePicker(true);
+                    navigation.navigate('/expense-form', {itemId: itemId, item: null})
                 }}
             >
                 <Icon name="plus" size={25} color="#FFF"/>
             </TouchableOpacity>
           ),
-        });
-
-        UUIDGenerator.getRandomUUID((uuid) => {
-            console.log(uuid);
         });
     }, [navigation]);
 
@@ -38,13 +37,13 @@ const DetailExpensePage = ({navigation, route}) => {
         return(
             <ListItem
                 style={{
-                    marginHorizontal: 15,
+                    marginHorizontal: 8,
                     marginVertical: 5
                 }}
                     Component={TouchableHighlight}
                     containerStyle={{}}
                     disabledStyle={{ opacity: 0.5 }}
-                    onPress={() => {}}
+                    onPress={() => navigation.navigate('/expense-form', {itemId: itemId, item: item})}
                     pad={20}
                 >
                 <Icon name="money-bill-wave" size={30} color={Colors.primary} />
@@ -56,18 +55,7 @@ const DetailExpensePage = ({navigation, route}) => {
                     <Text>{currencyFormat(item.total)}</Text>
                     </ListItem.Subtitle>
                 </ListItem.Content>
-                {/* <TouchableHighlight onPress={() => {}} style={{
-                    padding: 10,
-                    borderRadius: 50
-                }} underlayColor={Colors.primaryLight}>
-                    <Icon name="edit" color="green"  size={20}/>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={() => {}} style={{
-                    padding: 10,
-                    borderRadius: 50
-                }} underlayColor={Colors.primaryLight}>
-                    <Icon name="trash" color="red"  size={20}/>
-                </TouchableHighlight> */}
+                {item.has_pay && <Icon name="check-square" size={30} color={Colors.primary} />}
             </ListItem>
         );
     }
@@ -88,65 +76,78 @@ const DetailExpensePage = ({navigation, route}) => {
         const data = value.data();
         return(
             <View style={style.container}>
-                <Card>
+                <View style={{
+                    flexDirection: "column",
+                    backgroundColor: "#FFF",
+                    padding: 16
+                }}>
+                    <Text style={{
+                        fontSize: 20,
+                        fontWeight: 'bold'
+                    }}>Pengeluaran</Text>
                     <View style={{
-                        flexDirection: "column"
+                        flexDirection: 'row'
                     }}>
+                        <Icon name="calendar" color={Colors.primary} size={20} style={{
+                            marginRight: 10
+                        }} />
                         <Text style={{
-                            fontSize: 20,
-                            fontWeight: 'bold'
-                        }}>Pengeluaran</Text>
+                            fontSize: 18
+                        }}>{numToStringMonth[parseInt(data.month) - 1]} {data.year}</Text>
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        alignContent: 'space-between',
+                        marginTop: 10
+                    }}>
                         <View style={{
-                            flexDirection: 'row'
+                            flex: 1,
+                            flexDirection: 'column',
                         }}>
-                            <Icon name="calendar" color={Colors.primary} size={20} style={{
-                                marginRight: 10
-                            }} />
                             <Text style={{
-                                fontSize: 18
-                            }}>{numToStringMonth[parseInt(data.month) - 1]} {data.year}</Text>
+                                fontSize: 16,
+                                fontWeight: 'bold'
+                            }}>Total Pengeluaran</Text>
+                            <Text style={{
+                                fontWeight: '600'
+                            }}>{currencyFormat(data.total)}</Text>
                         </View>
                         <View style={{
-                            flexDirection: 'row',
-                            alignContent: 'space-between',
-                            marginTop: 10
+                            flex: 1,
+                            flexDirection: 'column',
                         }}>
-                            <View style={{
-                                flex: 1,
-                                flexDirection: 'column',
-                            }}>
-                                <Text style={{
-                                    fontSize: 16,
-                                    fontWeight: 'bold'
-                                }}>Total Pengeluaran</Text>
-                                <Text style={{
-                                    fontWeight: '600'
-                                }}>{currencyFormat(data.total)}</Text>
-                            </View>
-                            <View style={{
-                                flex: 1,
-                                flexDirection: 'column',
-                            }}>
-                                <Text style={{
-                                    fontSize: 16,
-                                    fontWeight: 'bold'
-                                }}>Total Pembayaran</Text>
-                                <Text style={{
-                                    fontWeight: '600'
-                                }}>{currencyFormat(data.total_pay)}</Text>
-                            </View>
+                            <Text style={{
+                                fontSize: 16,
+                                fontWeight: 'bold'
+                            }}>Total Pembayaran</Text>
+                            <Text style={{
+                                fontWeight: '600'
+                            }}>{currencyFormat(data.total_pay)}</Text>
                         </View>
                     </View>
-                </Card>
+                </View>
                 <FlatList
                     data={data.details}
-                    keyExtractor={(item) => {
-                        UUIDGenerator.getRandomUUID((uuid) => {
-                            return uuid;
-                        });
-                    }}
+                    keyExtractor={(item) => item.uid}
                     renderItem={renderItem}
                 />
+                <View style={{
+                    backgroundColor: "#FFF",
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingBottom: Math.max(insets.bottom, 16),
+                    paddingTop: 10,
+                    paddingHorizontal: 15,
+                }}>
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 18
+                    }}>Total</Text>
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 18
+                    }}>{currencyFormat(data.total)}</Text>
+                </View>
             </View>
         );
     }
