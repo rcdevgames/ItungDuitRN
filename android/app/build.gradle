@@ -133,8 +133,8 @@ android {
         applicationId "net.rcdevgames.itungduit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "0.0.1"
+        versionCode 5
+        versionName "0.0.2"
         multiDexEnabled true
     }
     splits {
