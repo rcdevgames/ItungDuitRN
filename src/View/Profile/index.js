@@ -9,6 +9,7 @@ import profileStore from './store';
 import AboutModal from '../../Components/modal';
 import auth from '@react-native-firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfilePage = ({navigation}) => {
     
@@ -19,13 +20,15 @@ const ProfilePage = ({navigation}) => {
             flex: 1,
             flexDirection: 'column',
         }}>
-            <View style={{
-                width: "100%",
-                height: "30%",
-                backgroundColor: Colors.primary,
-                alignItems: 'center',
-                justifyContent: 'flex-end'
-            }}>
+            <SafeAreaView
+                style={{
+                    width: "100%",
+                    backgroundColor: Colors.primary,
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    paddingVertical: 15
+                }}
+            >
                 <Avatar
                     size="xlarge"
                     rounded
@@ -35,14 +38,7 @@ const ProfilePage = ({navigation}) => {
                 />
                 <View style={{
                     marginTop: 10,
-                    marginBottom: 10
                 }}>
-                    {/* <Text style={{
-                        color: '#FFF',
-                        fontWeight: 'bold',
-                        fontSize: 20,
-                        textAlign: 'center'
-                    }}>Nama Lengkap</Text> */}
                     <Text style={{
                         color: '#FFF',
                         fontWeight: 'bold',
@@ -50,7 +46,7 @@ const ProfilePage = ({navigation}) => {
                         textAlign: 'center'
                     }}>{user?.phoneNumber??""}</Text>
                 </View>
-            </View>
+            </SafeAreaView>
             <ScrollView>
                 <ListItem
                     Component={TouchableHighlight}

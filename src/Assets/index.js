@@ -8,4 +8,5 @@ export const Images = {
 export const Colors = {
     primary: "#7a57d1",
     primaryLight: "#c2a6f5",
+    primaryDark: "#5c419e"
 }

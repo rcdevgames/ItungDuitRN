@@ -4,7 +4,9 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
     Image,
-    Text
+    Text,
+    KeyboardAvoidingView,
+    Platfrom
 } from 'react-native';
 import { Input, Button } from "react-native-elements";
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,31 +28,37 @@ const LoginPage = ({navigation}) => {
     }, []);
 
     return(
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <SafeAreaView style={styles.container}>
-                <Image source={Images.logo} style={styles.logo}/>
-                <View style={styles.loginForm}>
-                    <Input
-                        leftIcon={
-                            <Text style={styles.leading}>+62</Text>
-                        }
-                        leftIconContainerStyle={{
-                            marginRight: 5
-                        }}
-                        inputContainerStyle={styles.inputForm}
-                        inputStyle={{...styles.inputForm, fontWeight: 'bold'}}
-                        keyboardType='phone-pad'
-                        value={loginStore.phone}
-                        label="Phone Number"
-                        labelStyle={styles.inputForm}
-                        onChangeText={phone => loginStore.setPhone(phone)}
-                        errorMessage={loginStore.errorPhone}
-                    />
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
+            enabled
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.container}>
+                    <Image source={Images.logo} style={styles.logo}/>
+                    <View style={styles.loginForm}>
+                        <Input
+                            leftIcon={
+                                <Text style={styles.leading}>+62</Text>
+                            }
+                            leftIconContainerStyle={{
+                                marginRight: 5
+                            }}
+                            inputContainerStyle={styles.inputForm}
+                            inputStyle={{...styles.inputForm, fontWeight: 'bold'}}
+                            keyboardType='phone-pad'
+                            value={loginStore.phone}
+                            label="Phone Number"
+                            labelStyle={styles.inputForm}
+                            onChangeText={phone => loginStore.setPhone(phone)}
+                            errorMessage={loginStore.errorPhone}
+                        />
+                    </View>
+                    <Button onPress={() => loginStore.doLogin(navigation)} title="Submit" buttonStyle={styles.loginBtn}/>
                 </View>
-                <Button onPress={() => loginStore.doLogin(navigation)} title="Submit" buttonStyle={styles.loginBtn}/>
-                <LoadingIndicator/>
-            </SafeAreaView>
-        </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+            <LoadingIndicator/>
+        </KeyboardAvoidingView>
     );
 }
 

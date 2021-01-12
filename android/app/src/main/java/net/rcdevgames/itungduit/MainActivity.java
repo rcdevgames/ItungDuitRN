@@ -1,4 +1,4 @@
-package com.itungduit;
+package net.rcdevgames.itungduit;
 
 import com.facebook.react.ReactActivity;
 

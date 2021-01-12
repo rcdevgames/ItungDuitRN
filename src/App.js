@@ -4,6 +4,7 @@ import Route from './route';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Toast from "react-native-fast-toast";
 import globalStore from './Data/global';
+import { Colors } from './Assets';
 
 const App = () => {
   const toastRef = useRef(null);
@@ -14,7 +15,7 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <StatusBar translucent barStyle="light-content" />
+      <StatusBar translucent barStyle="light-content" backgroundColor={Colors.primaryDark} />
       <Route/>
       <Toast ref={toastRef} />
     </SafeAreaProvider>
