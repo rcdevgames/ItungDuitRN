@@ -40,7 +40,7 @@ const ExpensePage = ({navigation}) => {
                     <Text>{currencyFormat(val.total)}</Text>
                     </ListItem.Subtitle>
                 </ListItem.Content>
-                <TouchableHighlight onPress={() => expenseStore.openDetail(query, item.id)} style={{
+                <TouchableHighlight onPress={() => expenseStore.openDetail(firestores.instance, item.id)} style={{
                     padding: 10,
                     borderRadius: 50,
                     underlayColor: Colors.primaryLight
